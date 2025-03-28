@@ -49,7 +49,9 @@ def main():
         output_base=base_dir,
     )
     # Update parameters for baseline from default json file
-    with files("ogzaf").joinpath("ogzaf_default_parameters.json").open("r") as file:
+    with files("ogzaf").joinpath("ogzaf_default_parameters.json").open(
+        "r"
+    ) as file:
         defaults = json.load(file)
     p.update_specifications(defaults)
 
@@ -136,8 +138,12 @@ def main():
     """
     base_tpi = safe_read_pickle(os.path.join(base_dir, "TPI", "TPI_vars.pkl"))
     base_params = safe_read_pickle(os.path.join(base_dir, "model_params.pkl"))
-    reform_tpi = safe_read_pickle(os.path.join(reform_dir, "TPI", "TPI_vars.pkl"))
-    reform_params = safe_read_pickle(os.path.join(reform_dir, "model_params.pkl"))
+    reform_tpi = safe_read_pickle(
+        os.path.join(reform_dir, "TPI", "TPI_vars.pkl")
+    )
+    reform_params = safe_read_pickle(
+        os.path.join(reform_dir, "model_params.pkl")
+    )
     # put reform(s) in dict
     # If do other sims (e.g, with high and low forecasts of excess deaths), they
     # can be added to this dictionary
@@ -149,7 +155,9 @@ def main():
     }
 
     # Create tables and plots
-    create_plots_tables.plots(base_tpi, base_params, reform_dict, forecast, plot_path)
+    create_plots_tables.plots(
+        base_tpi, base_params, reform_dict, forecast, plot_path
+    )
 
 
 if __name__ == "__main__":
