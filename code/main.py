@@ -49,9 +49,7 @@ def main():
         output_base=base_dir,
     )
     # Update parameters for baseline from default json file
-    with files("ogzaf").joinpath("ogzaf_default_parameters.json").open(
-        "r"
-    ) as file:
+    with files("ogzaf").joinpath("ogzaf_default_parameters.json").open("r") as file:
         defaults = json.load(file)
     p.update_specifications(defaults)
 
@@ -89,25 +87,27 @@ def main():
     )
     p2.update_specifications(new_pop_dict)
 
-    # Apply productivity losses for the bottom 70% of the population
-    # these are a linear interpolation of the four scenario values
+    # Apply the combined productivity losses for HIV and Tuberculosis impacts
+    # Apply only the bottom 70% of the population
+    # For HIV these are a linear interpolation of the four scenario values
+    # For Tuberculosis, we estimate an additional constant impact of (0.000896759)
     productivity_adjustments = {
-        2025: -0.000018,
-        2026: -0.00007,
-        2027: -0.000122,
-        2028: -0.000174,
-        2029: -0.000226,
-        2030: -0.000278,
-        2031: -0.000401,
-        2032: -0.000524,
-        2033: -0.000647,
-        2034: -0.00077,
-        2035: -0.000893,
-        2036: -0.000957,
-        2037: -0.001021,
-        2038: -0.001085,
-        2039: -0.00115,
-        2040: -0.001214,
+        2025: -0.00091476,
+        2026: -0.00096676,
+        2027: -0.00101876,
+        2028: -0.00107076,
+        2029: -0.00112276,
+        2030: -0.00117476,
+        2031: -0.00129776,
+        2032: -0.00142076,
+        2033: -0.00154376,
+        2034: -0.00166676,
+        2035: -0.00178976,
+        2036: -0.00185376,
+        2037: -0.00191776,
+        2038: -0.00198176,
+        2039: -0.00204676,
+        2040: -0.00211076,
     }
 
     def get_adjustment(year):
@@ -136,12 +136,8 @@ def main():
     """
     base_tpi = safe_read_pickle(os.path.join(base_dir, "TPI", "TPI_vars.pkl"))
     base_params = safe_read_pickle(os.path.join(base_dir, "model_params.pkl"))
-    reform_tpi = safe_read_pickle(
-        os.path.join(reform_dir, "TPI", "TPI_vars.pkl")
-    )
-    reform_params = safe_read_pickle(
-        os.path.join(reform_dir, "model_params.pkl")
-    )
+    reform_tpi = safe_read_pickle(os.path.join(reform_dir, "TPI", "TPI_vars.pkl"))
+    reform_params = safe_read_pickle(os.path.join(reform_dir, "model_params.pkl"))
     # put reform(s) in dict
     # If do other sims (e.g, with high and low forecasts of excess deaths), they
     # can be added to this dictionary
@@ -153,9 +149,7 @@ def main():
     }
 
     # Create tables and plots
-    create_plots_tables.plots(
-        base_tpi, base_params, reform_dict, forecast, plot_path
-    )
+    create_plots_tables.plots(base_tpi, base_params, reform_dict, forecast, plot_path)
 
 
 if __name__ == "__main__":
